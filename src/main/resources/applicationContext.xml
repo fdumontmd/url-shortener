@@ -1,0 +1,35 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+<!-- 	<context:component-scan base-package="jp.wakatta" />  -->
+
+	<bean id="jedis" class="jp.wakatta.client.JedisClient">
+		<constructor-arg index="0" value="foobared" />
+		<constructor-arg index="1">
+			<map>
+				<entry key="127.0.0.1:6379">
+					<list>
+						<value>127.0.0.1:6380</value>
+						<value>127.0.0.1:6381</value>
+					</list>
+				</entry>
+				<entry key="127.0.0.1:6389">
+					<list>
+						<value>127.0.0.1:6390</value>
+						<value>127.0.0.1:6391</value>
+					</list>
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="admin" class="jp.wakatta.web.Admin">
+		<property name="jedis" ref="jedis" />
+	</bean>
+
+	<bean id="service" class="jp.wakatta.web.Client">
+		<property name="jedis" ref="jedis" />
+	</bean>
+</beans>
